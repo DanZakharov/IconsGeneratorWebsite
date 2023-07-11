@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Icons Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caprasimo&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="main-gen">
+      <div id="gen-controls">
+        <div id="prompt-inter">
+          <label for="prompt-input"></label>
+          <input id="prompt-input" placeholder="Enter a Prompt" />
+          <img
+            id="settings-icon-js"
+            src="https://icons.veryicon.com/png/o/internet--web/55-common-web-icons/settings-87.png"
+            alt="Dropdown icon"
+          />
+        </div>
+        <button id="download-button">Download</button>
+      </div>
+
+      <div id="settings-js"></div>
+
+      <div id="gen-results">
+        <p id="gen-results-info-js">
+          Some generation results are going to appear here. Please, enter the
+          prompt above and press Enter.
+        </p>
+        <div id="show-images-js"></div>
+      </div>
+    </div>
+
+    <script src="script.js" type="module"></script>
+  </body>
+</html>
