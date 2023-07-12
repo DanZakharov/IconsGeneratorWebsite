@@ -14,9 +14,9 @@ public class HttpServer {
 
     public static void main(String[] args) {
 
-        LOGGER.info("The server is running!");
+        LOGGER.info("Started. Trying to run the server...");
 
-        ConfigurationManager.getInstance().loadConfigurationFile("src/main/resources/http.json");
+        ConfigurationManager.getInstance().loadConfigurationFile("src/backend/resources/http.json");
         Configuration config = ConfigurationManager.getInstance().getCurrentConfiguration();
 
         LOGGER.info("Running on Port: " + config.getPort());

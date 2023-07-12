@@ -131,9 +131,7 @@ async function recursiveCreateImage(promptFirstP, promptSecondP = "") {
         }
     );
     const blob = await response.blob();
-    console.log(response.status) 
     if (response.status === 503 || blob.size === 4723) {
-        console.log('calling recursively...')
         return await recursiveCreateImage(promptFirstP + ".", promptSecondP);
     }
     return blob;
