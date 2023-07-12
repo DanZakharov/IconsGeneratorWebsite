@@ -20,10 +20,10 @@ public class HttpServer {
         Configuration config = ConfigurationManager.getInstance().getCurrentConfiguration();
 
         LOGGER.info("Running on Port: " + config.getPort());
-        LOGGER.info("Running on webroot: " + config.getWebroot());
+//        LOGGER.info("Running on webroot: " + config.getWebroot()); // TODO implement webroot
 
         try {
-            ServerListenerThread serverListenerThread = new ServerListenerThread(config.getPort(), config.getWebroot());
+            ServerListenerThread serverListenerThread = new ServerListenerThread(config.getPort());
             serverListenerThread.start();
         } catch (IOException e) {
             e.printStackTrace();

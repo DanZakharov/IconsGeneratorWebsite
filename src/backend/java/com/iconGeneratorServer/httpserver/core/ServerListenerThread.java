@@ -11,14 +11,10 @@ public class ServerListenerThread extends Thread {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ServerListenerThread.class);
 
-    private int port;
-    private String webroot;
-    private ServerSocket serverSocket;
+    private final ServerSocket serverSocket;
 
-    public ServerListenerThread(int port, String webroot) throws IOException {
-        this.port = port;
-        this.webroot = webroot;
-        this.serverSocket = new ServerSocket(this.port);
+    public ServerListenerThread(int port) throws IOException {
+        this.serverSocket = new ServerSocket(port);
     }
 
     @Override

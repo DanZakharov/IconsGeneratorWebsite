@@ -25,7 +25,7 @@ public class HttpConnectionWorkerThread extends Thread {
     }
 
     private final static Logger LOGGER = LoggerFactory.getLogger(HttpConnectionWorkerThread.class);
-    private Socket socket;
+    private final Socket socket;
 
     public HttpConnectionWorkerThread(Socket socket) {
         this.socket = socket;
