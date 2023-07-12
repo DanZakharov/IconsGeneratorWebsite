@@ -2,7 +2,7 @@ import { PngIcoConverter } from "/modules/png2icojs.js";
 
 let openedSettings = false;
 
-let userSettings = {
+let userData = {
     'amount-of-images': 4,
     'rem-back': false,
     'download-file-format': 'ico',
@@ -35,10 +35,10 @@ function handleSettingsIconClick() {
 function showSettings() {
     const settingsDiv = document.querySelector(settingsDivSelector);
     settingsHTML.querySelectorAll(settingTextSelector).forEach(setting => {
-        setting.placeholder = userSettings[setting.id];
+        setting.placeholder = userData[setting.id];
     })
     settingsHTML.querySelectorAll(settingToggleSelector).forEach(setting => {
-        if (userSettings[setting.id]) {
+        if (userData[setting.id]) {
             setting.innerText = 'ON';
             setting.classList = 'toggle-switch on-state-js';
         } else {
@@ -48,9 +48,9 @@ function showSettings() {
     })
     settingsHTML.querySelectorAll(settingDropdownSelector).forEach(setting => {
         const firstOption = setting.options[0].innerText;
-        console.log(userSettings)
-        const neededOption = pickOption(setting, userSettings[setting.id]);
-        setting.options[0].innerText = userSettings[setting.id];
+        console.log(userData)
+        const neededOption = pickOption(setting, userData[setting.id]);
+        setting.options[0].innerText = userData[setting.id];
         neededOption.innerText = firstOption;
         console.log(`Before for end:\n${setting.options[0].innerText}\n${setting.options[1].innerText}`)
     })
@@ -71,14 +71,14 @@ function pickOption(selectObj, valueToPick) {
 function hideSettings() {
     const settingsDiv = document.querySelector(settingsDivSelector);
     settingsDiv.querySelectorAll(settingTextSelector).forEach(setting => {
-        if (setting.value) userSettings[setting.id] = setting.value;
+        if (setting.value) userData[setting.id] = setting.value;
     });
     settingsDiv.querySelectorAll(settingToggleSelector).forEach(setting => {
-        setting.innerHTML === 'ON' ? userSettings[setting.id] = true : userSettings[setting.id] = false;
+        setting.innerHTML === 'ON' ? userData[setting.id] = true : userData[setting.id] = false;
     })
     settingsDiv.querySelectorAll(settingDropdownSelector).forEach(setting => {
         console.log(setting.options[setting.selectedIndex].innerText)
-        userSettings[setting.id] = setting.options[setting.selectedIndex].innerText;
+        userData[setting.id] = setting.options[setting.selectedIndex].innerText;
     })
     settingsDiv.innerHTML = null;
 }
@@ -86,15 +86,14 @@ function hideSettings() {
 async function createImages(
     prompt, amount, toAppend, logsElement, remBackground, ifEnhancePrompt = true
 ) {
-    let promptApproved = prompt
+    let promptFinal = prompt;
     logsElement.innerText = 'Generating images...';
-    if (ifEnhancePrompt) {promptApproved = await enhancePrompt(prompt)}
-    else {promptApproved = prompt}
+    if (ifEnhancePrompt) {promptFinal = await enhancePrompt(prompt)}
     for (let i = 0; i < amount; i++) {
-        const blob = await recursiveCreateImage(promptApproved, " ".repeat(i));
+        const blob = await recursiveCreateImage(promptFinal, " ".repeat(i));
         const img = new Image();
         const rbBlob = await (remBackground ? (await removeBackground(blob)) : blob);
-        userSettings['generated-images'].push({
+        userData['generated-images'].push({
             blob: rbBlob,
             prompt: prompt
         });
@@ -102,7 +101,7 @@ async function createImages(
         toAppend.appendChild(img);
         logsElement.innerText = `Still generating... ${amount - (i + 1)} left.`;
     }
-    console.log(userSettings['generated-images'][0].blob)
+    console.log(userData['generated-images'][0].blob)
     logsElement.innerText = null;
 }
 
@@ -162,18 +161,18 @@ function submitPrompt(event) {
         hideSettings();
         openedSettings = false;
         let amountOfImages;
-        userSettings['amount-of-images'] > 10 ? amountOfImages = 10 : amountOfImages = userSettings['amount-of-images']
+        userData['amount-of-images'] > 10 ? amountOfImages = 10 : amountOfImages = userData['amount-of-images']
         createImages(
             userInput, amountOfImages, generationShowResultsElement,
-            generationResultsInfoElement, userSettings['rem-back']
+            generationResultsInfoElement, userData['rem-back']
         );
     }
 }
 
 async function processAllImages() {
     const converter = new PngIcoConverter();
-    if (userSettings['download-file-format'] === 'ico') {
-        for (const image of userSettings['generated-images']) {
+    if (userData['download-file-format'] === 'ico') {
+        for (const image of userData['generated-images']) {
             downloadImage(
                 await converter.convertToBlobAsync({
                     png: await resizeSquareImage(image.blob)
@@ -181,8 +180,8 @@ async function processAllImages() {
                 image.prompt.split(" ").slice(0, 3).join(" ")
             );
         }   
-    } else if (userSettings['download-file-format'] === 'png') {
-        for (const image of userSettings['generated-images']) {
+    } else if (userData['download-file-format'] === 'png') {
+        for (const image of userData['generated-images']) {
             downloadImage(image.blob, image.prompt.split(" ").slice(0, 3).join(" ") + '.png');
         }
     }
